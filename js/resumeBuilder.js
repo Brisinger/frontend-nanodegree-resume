@@ -12,14 +12,65 @@ var bio = {
     "contacts": {
         "mobile": HTMLmobile.replace("%data%", "9677365402"),
         "email": HTMLemail.replace("%data%", "shubhojit.dasgupta@gmail.com"),
-        "github": HTMLgithub.replace("%data%","Brisinger"),
+        "github": HTMLgithub.replace("%data%", "Brisinger"),
         "location": HTMLlocation.replace("%data%", "Hyderabad, India.")
     },
     "welcomeMessage": HTMLwelcomeMsg.replace("%data%", "Inqusitive web developer"),
     "biopic": HTMLbioPic.replace("%data%", "images/fry.jpg"),
-    "skills": ["C# 4.0", "MVC 5.0", "ASP.Net 4.0", "CSS 3", "HTML 5", "JavaScript", "Bootstrap 3"]
+    "skills": ["C# 4.0", "MVC 5.0 with Bootstrap 3 ", "ASP.Net 4.0", "SharePoint", "CSS 3", "HTML 5", "JavaScript"]
 
 };
+//Object for educational details
+var education = {
+    "schools": {
+        "name": "Amrita school of engineering",
+        "location": "Ettimadai, Coimbatore",
+        "degree": "B-Tech",
+        "major": "Computer Science and Engineering",
+        "dates": "2008-2012",
+        "url": "https://www.amrita.edu/school/engineering"
+    },
+    "onlineCourses": [{
+        "title": "HTML5 & CSS3",
+        "school": "Udacity",
+        "dates": "2016",
+        "url": "https://cmooc.cognizant.com/course/view.php?id=14"
+    }, {
+        "title": "JavaScript",
+        "school": "Udacity",
+        "dates": "2016",
+        "url": "https://cmooc.cognizant.com/course/view.php?id=35"
+    }]
+};
+//Object for work details.
+var work = {
+    "jobs": {
+        "employer": "Cognizant technology solutions",
+        "title": "Associate",
+        "location": "Chennai, India",
+        "dates": "2012 - Future",
+        "description": "Professional experience in the field of Information Technology with complete focus on Web development and enhancement",
+    },
+};
+//Object for projects details.
+var projects = {
+    "projects": [{
+        "title": "Healthcare Talent Management Portal",
+        "dates": "Jan 2014 - Dec 2014",
+        "description": "Cerebrum Portal is a Sharepoint site that's used for sharing and displaying information," +
+                       " documents and queries with authorized access to Healthcare associates only.",
+        "images": ["images/cerebrum.gif", "images/cerebrum1.gif"],
+        "url": "https://cerebrum.cognizant.com/Pages/index.aspx"
+    },
+    {
+        "title": "Healthcare Mobility",
+        "dates": "2015 - 2016",
+        "description": "ASP.Net web application for automatically transferring data, based on the data in uploaded excel sheets.",
+        "images": ["images/Healthcare Mobility.gif"],
+        "url": "https://hctravelexpense.cognizant.com/"
+    }]
+};
+
 console.log(awesomeThoughts);
 console.log(funThoughts);
 
@@ -39,6 +90,52 @@ $("#topContacts").prepend(bio.contacts.mobile);
 $("#header").prepend(bio.role);
 $("#header").prepend(bio.name);
 
-//$("#topContacts").prepend(bio.Contact);
-//$("#topContacts").prepend(bio.Mobile);
-//$("#topContacts").prepend(bio.Mail);
+//Adding work details to the HTML template.
+var mapObj = {
+    "#": "https://www.cognizant.com/",
+    "%data%": work.jobs.employer + HTMLworkTitle.replace("%data%", work.jobs.title)
+
+};
+$("#workExperience").append(HTMLworkStart);
+$(".work-entry").append(HTMLworkEmployer.replace(/#|%data%/gi, function (mapped) {
+    return mapObj[mapped];
+}), HTMLworkDates.replace("%data%", work.jobs.dates), HTMLworkLocation.replace("%data%", work.jobs.location),
+HTMLworkDescription.replace("%data%", work.jobs.description));
+
+//Adding education details to HTML template.
+mapObj["#"] = education.schools["url"];
+mapObj["%data%"] = education.schools["name"] + HTMLschoolDegree.replace("%data%", education.schools.degree);
+$("#education").append(HTMLschoolStart);
+$(".education-entry").append(HTMLschoolName.replace(/#|%data%/gi, function (mapped) {
+    return mapObj[mapped];
+}), HTMLschoolDates.replace("%data%", education.schools.dates), HTMLschoolLocation.replace("%data%", education.schools.location),
+HTMLschoolMajor.replace("%data%", education.schools.major), HTMLonlineClasses,
+HTMLonlineTitle.replace(/#|%data%/gi, function (mapped) {
+    mapObj["#"] = education.onlineCourses[0].url;
+    mapObj["%data%"] = education.onlineCourses[0].title + HTMLonlineSchool.replace("%data%", education.onlineCourses[0].school);
+    return mapObj[mapped];
+}), HTMLonlineDates.replace("%data%", education.onlineCourses[0].dates), HTMLonlineURL.replace(/#|%data%/gi, function (mapped) {
+    mapObj["#"] = mapObj["%data%"] = "https://classroom.udacity.com/courses/ud304";
+    return mapObj[mapped];
+}), HTMLonlineTitle.replace(/#|%data%/gi, function (mapped) {
+    mapObj["#"] = education.onlineCourses[1].url;
+    mapObj["%data%"] = education.onlineCourses[1].title + HTMLonlineSchool.replace("%data%", education.onlineCourses[1].school);
+    return mapObj[mapped];
+}), HTMLonlineDates.replace("%data%", education.onlineCourses[1].dates), HTMLonlineURL.replace(/#|%data%/gi, function (mapped) {
+    mapObj["#"] = mapObj["%data%"] = "https://classroom.udacity.com/courses/ud804";
+    return mapObj[mapped];
+}));
+//Adding projects details to HTML template.
+$("#projects").append(HTMLprojectStart);
+projects.projects.forEach(function (project, index) {
+    $(".project-entry").append(HTMLprojectTitle.replace(/#|%data%/gi, function (mapped) {
+        mapObj["#"] = projects.projects[index].url;
+        mapObj["%data%"] = projects.projects[index].title;
+        return mapObj[mapped];
+    })
+    , HTMLprojectDates.replace("%data%", projects.projects[index].dates),
+    HTMLprojectDescription.replace("%data%", projects.projects[index].description));
+    projects.projects[index].images.forEach(function (image) {
+        $(".project-entry").append(HTMLprojectImage.replace("%data%", image));
+    });
+});
