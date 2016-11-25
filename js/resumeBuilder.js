@@ -77,12 +77,14 @@ console.log(funThoughts);
 
 $("#header").append(bio.biopic);
 $("#header").append(bio.welcomeMessage);
-$("#header").append(HTMLskillsStart);
+//Adding skills
+if (bio.skills.length > 0) {
+    $("#header").append(HTMLskillsStart);
 
-bio.skills.forEach(function (skill) {
-    $("#skills").append(HTMLskills.replace("%data%", skill));
-});
-
+    bio.skills.forEach(function (skill) {
+        $("#skills").append(HTMLskills.replace("%data%", skill));
+    });
+}
 $("#topContacts").prepend(bio.contacts["location"]);
 $("#topContacts").prepend(bio.contacts.github)
 $("#topContacts").prepend(bio.contacts.email);
