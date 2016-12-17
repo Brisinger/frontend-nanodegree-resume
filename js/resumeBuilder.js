@@ -44,13 +44,14 @@ var education = {
 };
 //Object for work details.
 var work = {
-    "jobs": {
+    "jobs": [{
         "employer": "Cognizant technology solutions",
         "title": "Associate",
         "location": "Chennai, India",
         "dates": "2012 - Future",
         "description": "Professional experience in the field of Information Technology with complete focus on Web development and enhancement",
-    },
+        "url": "https://www.cognizant.com/"
+    }]
 };
 //Object for projects details.
 var projects = {
@@ -92,19 +93,19 @@ $("#topContacts").prepend(bio.contacts.mobile);
 $("#header").prepend(bio.role);
 $("#header").prepend(bio.name);
 
-//Adding work details to the HTML template.
-var mapObj = {
-    "#": "https://www.cognizant.com/",
-    "%data%": work.jobs.employer + HTMLworkTitle.replace("%data%", work.jobs.title)
-
-};
-$("#workExperience").append(HTMLworkStart);
-$(".work-entry").append(HTMLworkEmployer.replace(/#|%data%/gi, function (mapped) {
-    return mapObj[mapped];
-}), HTMLworkDates.replace("%data%", work.jobs.dates), HTMLworkLocation.replace("%data%", work.jobs.location),
-HTMLworkDescription.replace("%data%", work.jobs.description));
-
+function displayWork() {
+    //Adding work details to the HTML template.
+    work.jobs.forEach(function (job) {
+        $("#workExperience").append(HTMLworkStart);
+        $(".work-entry:last").append(HTMLworkEmployer.replace(/#|%data%/gi, function (mapped) {
+            return mapped === '#' ? job.url : job.employer + HTMLworkTitle.replace("%data%", job.title);
+        }), HTMLworkDates.replace("%data%", job.dates), HTMLworkLocation.replace("%data%", job.location),
+        HTMLworkDescription.replace("%data%", job.description));
+    });
+}
+displayWork();
 //Adding education details to HTML template.
+var mapObj = {};
 mapObj["#"] = education.schools["url"];
 mapObj["%data%"] = education.schools["name"] + HTMLschoolDegree.replace("%data%", education.schools.degree);
 $("#education").append(HTMLschoolStart);
