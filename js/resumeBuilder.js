@@ -18,8 +18,15 @@ var bio = {
     "welcomeMessage": HTMLwelcomeMsg.replace("%data%", "Inqusitive web developer"),
     "biopic": HTMLbioPic.replace("%data%", "images/fry.jpg"),
     "skills": ["C# 4.0", "MVC 5.0 with Bootstrap 3 ", "ASP.Net 4.0", "SharePoint", "CSS 3", "HTML 5", "JavaScript"]
-
 };
+//Internationalize the Bio Name
+$('#main').append(internationalizeButton);
+function inName(name) {
+    name = name.trim().split(' ');
+    name[0] = name[0].charAt(0).toUpperCase() + name[0].slice(1).toLowerCase();
+    name[1] = name[1].toUpperCase();
+    return name[0] + " " + name[1];
+}
 //Object for educational details
 var education = {
     "schools": {
@@ -71,7 +78,24 @@ var projects = {
         "url": "https://hctravelexpense.cognizant.com/"
     }]
 };
-
+//Adding display function inside projects object using object literal dot notation.
+$("#projects").append(HTMLprojectStart);
+projects.projects.forEach(function (project, index) {
+    project.display = function () {
+        $(".project-entry").append(HTMLprojectTitle.replace(/#|%data%/gi, function (mapped) {
+            return mapped === "#" ? projects.projects[index].url : projects.projects[index].title;
+        })
+        , HTMLprojectDates.replace("%data%", projects.projects[index].dates),
+        HTMLprojectDescription.replace("%data%", projects.projects[index].description));
+        projects.projects[index].images.forEach(function (image) {
+            $(".project-entry").append(HTMLprojectImage.replace("%data%", image));
+        });
+    };
+});
+//displaying the projects.
+projects.projects.forEach(function (project) {
+    project.display();
+});
 console.log(awesomeThoughts);
 console.log(funThoughts);
 
@@ -128,17 +152,4 @@ HTMLonlineTitle.replace(/#|%data%/gi, function (mapped) {
     mapObj["#"] = mapObj["%data%"] = "https://classroom.udacity.com/courses/ud804";
     return mapObj[mapped];
 }));
-//Adding projects details to HTML template.
-$("#projects").append(HTMLprojectStart);
-projects.projects.forEach(function (project, index) {
-    $(".project-entry").append(HTMLprojectTitle.replace(/#|%data%/gi, function (mapped) {
-        mapObj["#"] = projects.projects[index].url;
-        mapObj["%data%"] = projects.projects[index].title;
-        return mapObj[mapped];
-    })
-    , HTMLprojectDates.replace("%data%", projects.projects[index].dates),
-    HTMLprojectDescription.replace("%data%", projects.projects[index].description));
-    projects.projects[index].images.forEach(function (image) {
-        $(".project-entry").append(HTMLprojectImage.replace("%data%", image));
-    });
-});
+
