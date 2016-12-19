@@ -13,7 +13,9 @@ h6 {
   margin:0;
   font-family: "Roboto", sans-serif;
 }
-
+div#main button{
+    display:none;
+}
 .clear-fix {
   overflow: auto;
 }
