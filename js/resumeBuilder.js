@@ -152,4 +152,5 @@ HTMLonlineTitle.replace(/#|%data%/gi, function (mapped) {
     mapObj["#"] = mapObj["%data%"] = "https://classroom.udacity.com/courses/ud804";
     return mapObj[mapped];
 }));
-
+//Adding a google map with locations where I lived.
+$("#mapDiv").append(googleMap);
