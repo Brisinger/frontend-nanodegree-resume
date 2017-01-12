@@ -128,7 +128,7 @@ function initializeMap() {
     var locations = [];
 
     // adds the single location property from bio to the locations array
-    locations.push(bio.contacts.location);
+    locations.push("Hyderabad, India.");
 
     // iterates through school locations and appends each location to
     // the locations array. Note that forEach is used for array iteration
@@ -245,6 +245,6 @@ window.addEventListener('load', initializeMap);
 // Vanilla JS way to listen for resizing of the window
 // and adjust map bounds
 window.addEventListener('resize', function(e) {
-  //Make sure the map bounds get updated on page resize
-  map.fitBounds(mapBounds);
+    //  //Make sure the map bounds get updated on page resize
+map.fitBounds(mapBounds);
 });

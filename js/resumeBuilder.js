@@ -29,14 +29,14 @@ function inName(name) {
 }
 //Object for educational details
 var education = {
-    "schools": {
+    "schools": [{
         "name": "Amrita school of engineering",
         "location": "Ettimadai, Coimbatore",
         "degree": "B-Tech",
         "major": "Computer Science and Engineering",
         "dates": "2008-2012",
         "url": "https://www.amrita.edu/school/engineering"
-    },
+    }],
     "onlineCourses": [{
         "title": "HTML5 & CSS3",
         "school": "Udacity",
@@ -73,7 +73,7 @@ var projects = {
     {
         "title": "Healthcare Mobility",
         "dates": "2015 - 2016",
-        "description": "ASP.Net web application for automatically transferring data, based on the data in uploaded excel sheets.",
+        "description": "ASP.Net web application for automatically analysing information, based on the data in uploaded excel sheets.",
         "images": ["images/Healthcare Mobility.gif"],
         "url": "https://hctravelexpense.cognizant.com/"
     }]
@@ -129,28 +129,34 @@ function displayWork() {
 }
 displayWork();
 //Adding education details to HTML template.
-var mapObj = {};
-mapObj["#"] = education.schools["url"];
-mapObj["%data%"] = education.schools["name"] + HTMLschoolDegree.replace("%data%", education.schools.degree);
-$("#education").append(HTMLschoolStart);
-$(".education-entry").append(HTMLschoolName.replace(/#|%data%/gi, function (mapped) {
-    return mapObj[mapped];
-}), HTMLschoolDates.replace("%data%", education.schools.dates), HTMLschoolLocation.replace("%data%", education.schools.location),
-HTMLschoolMajor.replace("%data%", education.schools.major), HTMLonlineClasses,
-HTMLonlineTitle.replace(/#|%data%/gi, function (mapped) {
-    mapObj["#"] = education.onlineCourses[0].url;
-    mapObj["%data%"] = education.onlineCourses[0].title + HTMLonlineSchool.replace("%data%", education.onlineCourses[0].school);
-    return mapObj[mapped];
-}), HTMLonlineDates.replace("%data%", education.onlineCourses[0].dates), HTMLonlineURL.replace(/#|%data%/gi, function (mapped) {
-    mapObj["#"] = mapObj["%data%"] = "https://classroom.udacity.com/courses/ud304";
-    return mapObj[mapped];
-}), HTMLonlineTitle.replace(/#|%data%/gi, function (mapped) {
-    mapObj["#"] = education.onlineCourses[1].url;
-    mapObj["%data%"] = education.onlineCourses[1].title + HTMLonlineSchool.replace("%data%", education.onlineCourses[1].school);
-    return mapObj[mapped];
-}), HTMLonlineDates.replace("%data%", education.onlineCourses[1].dates), HTMLonlineURL.replace(/#|%data%/gi, function (mapped) {
-    mapObj["#"] = mapObj["%data%"] = "https://classroom.udacity.com/courses/ud804";
-    return mapObj[mapped];
-}));
+education.display = function () {
+    var mapObj = {};
+    education.schools.forEach(function(schools){
+        mapObj["#"] = schools["url"];
+        mapObj["%data%"] = schools["name"] + HTMLschoolDegree.replace("%data%", schools.degree);
+        $("#education").append(HTMLschoolStart);
+        $(".education-entry:last").append(HTMLschoolName.replace(/#|%data%/gi, function (mapped) {
+            return mapObj[mapped];
+        }), HTMLschoolDates.replace("%data%", schools.dates), HTMLschoolLocation.replace("%data%", schools.location),
+        HTMLschoolMajor.replace("%data%", schools.major))});
+    $("education-entry:last").append(HTMLonlineClasses,
+    HTMLonlineTitle.replace(/#|%data%/gi, function (mapped) {
+        mapObj["#"] = education.onlineCourses[0].url;
+        mapObj["%data%"] = education.onlineCourses[0].title + HTMLonlineSchool.replace("%data%", education.onlineCourses[0].school);
+        return mapObj[mapped];
+    }), HTMLonlineDates.replace("%data%", education.onlineCourses[0].dates), HTMLonlineURL.replace(/#|%data%/gi, function (mapped) {
+        mapObj["#"] = mapObj["%data%"] = "https://classroom.udacity.com/courses/ud304";
+        return mapObj[mapped];
+    }), HTMLonlineTitle.replace(/#|%data%/gi, function (mapped) {
+        mapObj["#"] = education.onlineCourses[1].url;
+        mapObj["%data%"] = education.onlineCourses[1].title + HTMLonlineSchool.replace("%data%", education.onlineCourses[1].school);
+        return mapObj[mapped];
+    }), HTMLonlineDates.replace("%data%", education.onlineCourses[1].dates), HTMLonlineURL.replace(/#|%data%/gi, function (mapped) {
+        mapObj["#"] = mapObj["%data%"] = "https://classroom.udacity.com/courses/ud804";
+        return mapObj[mapped];
+    }));
+}
+//Displaying education details
+education.display();
 //Adding a google map with locations where I lived.
 $("#mapDiv").append(googleMap);
